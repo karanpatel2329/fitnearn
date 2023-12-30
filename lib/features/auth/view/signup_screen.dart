@@ -18,8 +18,12 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   AuthController authController = Get.put(AuthController());
-   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    authController.resetValuesToDefault();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +57,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -62,8 +67,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextFormField(
                   controller: authController.fullNameController,
-                   validator: (value) {
-                    if (value?.isEmpty??true ) {
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please enter your full name';
                     }
                     return null;
@@ -89,7 +94,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -98,21 +104,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(Adaptive.px(13))),
-                    border: Border.all(color: AppColor.primaryText.withOpacity(0.45))
-                  ),
-                  padding: EdgeInsets.symmetric( horizontal: Adaptive.px(20) ),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Adaptive.px(13))),
+                      border: Border.all(
+                          color: AppColor.primaryText.withOpacity(0.45))),
+                  padding: EdgeInsets.symmetric(horizontal: Adaptive.px(20)),
                   child: DropdownButton(
-                    value: authController.gender.value,
-                    dropdownColor: Colors.white,
-                    
-                    hint: Text("Select Gender"),
-                    underline: SizedBox(),
-                    isExpanded: true,
-                    items: [DropdownMenuItem(value: 'male',child: Text('Male')),DropdownMenuItem(value: 'female',child: Text('Female'))], onChanged: (v){
-                      
-                      authController.gender.value = v??'';
-                    }),
+                      value: authController.gender.value,
+                      dropdownColor: Colors.white,
+                      hint: Text("Select Gender"),
+                      underline: SizedBox(),
+                      isExpanded: true,
+                      items: [
+                        DropdownMenuItem(value: 'male', child: Text('Male')),
+                        DropdownMenuItem(value: 'female', child: Text('Female'))
+                      ],
+                      onChanged: (v) {
+                        authController.gender.value = v ?? '';
+                      }),
                 ),
                 SizedBox(
                   height: Adaptive.px(10),
@@ -125,7 +134,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -133,25 +143,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: Adaptive.px(6),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(Adaptive.px(13))),
-                    border: Border.all(color: AppColor.primaryText.withOpacity(0.45))
-                  ),
-                  padding: EdgeInsets.symmetric( horizontal: Adaptive.px(20),vertical: Adaptive.px(12) ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                    Text(authController.dob.value==null?"Enter D.O.B.":"${authController.dob.value?.day}/${authController.dob.value?.month}/${authController.dob.value?.year}",),
-                    InkWell(onTap: ()async{
-                     DateTime? date = await showDatePicker(context: context, firstDate: DateTime(1980), lastDate: DateTime.now(),);
-                    setState(() {
-                    authController.dob = date.obs;
-                      
-                    });
-                    },child: Icon(Icons.calendar_month,color: AppColor.primaryColor,))
-                  ],)
-                  ),
-                  SizedBox(
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(Adaptive.px(13))),
+                        border: Border.all(
+                            color: AppColor.primaryText.withOpacity(0.45))),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Adaptive.px(20), vertical: Adaptive.px(12)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          authController.dob.value == null
+                              ? "Enter D.O.B."
+                              : "${authController.dob.value?.day}/${authController.dob.value?.month}/${authController.dob.value?.year}",
+                        ),
+                        InkWell(
+                            onTap: () async {
+                              DateTime? date = await showDatePicker(
+                                context: context,
+                                firstDate: DateTime(1980),
+                                lastDate: DateTime.now(),
+                              );
+                              setState(() {
+                                authController.dob = date.obs;
+                              });
+                            },
+                            child: Icon(
+                              Icons.calendar_month,
+                              color: AppColor.primaryColor,
+                            ))
+                      ],
+                    )),
+                SizedBox(
                   height: Adaptive.px(10),
                 ),
                 Row(
@@ -162,7 +186,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -172,8 +197,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.registerEmailController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
-                      return 'Please enter your email';
+                    if (!authController.isValidEmail(value ?? "")) {
+                      return 'Please enter valid email';
                     }
                     return null;
                   },
@@ -200,7 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.registerPasswordController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please enter your password';
                     }
                     return null;
@@ -219,7 +244,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: AppColor.primaryText.withOpacity(0.15))),
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   height: Adaptive.px(10),
                 ),
                 Row(
@@ -230,7 +255,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -240,7 +266,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.mobileController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please enter your mobile';
                     }
                     return null;
@@ -255,7 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: AppColor.primaryText.withOpacity(0.15))),
                   ),
                 ),
-                   SizedBox(
+                SizedBox(
                   height: Adaptive.px(10),
                 ),
                 Row(
@@ -266,7 +292,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -276,11 +303,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.ageController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
-                      return 'Please enter your age';
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a age';
                     }
-                    return null;
+
+                    // Use a regular expression to check if the entered value is numeric
+                    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'Please enter a valid age';
+                    }
+
+                    return null; // Return null if the value is valid
                   },
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: 'Enter Age',
                     contentPadding: EdgeInsets.symmetric(
@@ -304,7 +338,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.addressController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please enter your address';
                     }
                     return null;
@@ -323,8 +357,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: AppColor.primaryText.withOpacity(0.15))),
                   ),
                 ),
-                
-            
                 SizedBox(
                   height: Adaptive.px(10),
                 ),
@@ -336,7 +368,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -346,7 +379,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.cityController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please enter your city';
                     }
                     return null;
@@ -361,7 +394,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: AppColor.primaryText.withOpacity(0.15))),
                   ),
                 ),
-            
                 SizedBox(
                   height: Adaptive.px(10),
                 ),
@@ -373,7 +405,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -383,7 +416,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.stateController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please enter your state';
                     }
                     return null;
@@ -409,7 +442,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       '*',
-                      style: AppTextStyle.inputLable.copyWith(color: AppColor.errorColor),
+                      style: AppTextStyle.inputLable
+                          .copyWith(color: AppColor.errorColor),
                     ),
                   ],
                 ),
@@ -419,11 +453,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   controller: authController.pincodeController,
                   validator: (value) {
-                    if (value?.isEmpty??true ) {
-                      return 'Please enter your pincode';
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a pincode';
                     }
-                    return null;
+
+                    // Use a regular expression to check if the entered value is numeric
+                    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'Please enter a valid pincode';
+                    }
+
+                    return null; // Return null if the value is valid
                   },
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: 'Enter Pincode',
                     contentPadding: EdgeInsets.symmetric(
@@ -446,7 +487,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Spacer(),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.to(ForgetPasswordScreen());
                       },
                       child: Text(
@@ -481,42 +522,84 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Center(
                   child: InkWell(
-                    onTap: (){
-                      if (_formKey.currentState?.validate()??false) {
-                        // If the form is valid, proceed with registration logic
-                        // Call your registration function here
-                         authController.register();
-                      }
-                    },
-                    child: Obx(()=>Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Adaptive.px(42), vertical: Adaptive.px(8)),
-                      decoration: BoxDecoration(
-                          color: AppColor.primaryColor,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(Adaptive.px(30))),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 4,
-                              offset: Offset(0, 4),
-                              spreadRadius: 0,
-                            )
-                          ]),
-                      child:authController.isLoading.value?CircularProgressIndicator(color: Colors.white,): Text("Register",style: AppTextStyle.interText.copyWith(color: Colors.white,fontSize: Adaptive.px(20),fontWeight: FontWeight.w600),),
-                    ),
-                 ) ),
+                      onTap: () async {
+                        if (authController.gender.value == null) {
+                          Get.showSnackbar(
+                            GetSnackBar(
+                              title: 'Select',
+                              message: 'Please select gender',
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          return;
+                        }
+                        if (authController.dob.value == null) {
+                          Get.showSnackbar(
+                            GetSnackBar(
+                              title: 'Select',
+                              message: 'Please select DOB',
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          return;
+                        }
+                        if (_formKey.currentState?.validate() ?? false) {
+                          // If the form is valid, proceed with registration logic
+                          // Call your registration function here
+                          authController.isLoading.value = true;
+                          bool isvalidAddress =
+                              await authController.validateAddress();
+                               authController.isLoading.value = false;
+                          if (isvalidAddress) {
+                            authController.register();
+                          }else{
+                                  Get.showSnackbar(GetSnackBar(title: 'error',message: 'Enter valid pincode of your state',duration: Duration(seconds: 2)));
+  
+                          }
+                        }
+                      },
+                      child: Obx(
+                        () => Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Adaptive.px(42),
+                              vertical: Adaptive.px(8)),
+                          decoration: BoxDecoration(
+                              color: AppColor.primaryColor,
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(Adaptive.px(30))),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 4),
+                                  spreadRadius: 0,
+                                )
+                              ]),
+                          child: authController.isLoading.value
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  "Register",
+                                  style: AppTextStyle.interText.copyWith(
+                                      color: Colors.white,
+                                      fontSize: Adaptive.px(20),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                        ),
+                      )),
                 ),
                 SizedBox(
                   height: Adaptive.px(35),
                 ),
-                 GestureDetector(
-                  onTap: (){
+                GestureDetector(
+                  onTap: () {
                     Get.to(LoginScreen());
                   },
-                   child: Center(
+                  child: Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: Adaptive.px(20)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: Adaptive.px(20)),
                       child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
@@ -525,11 +608,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               children: [
                                 TextSpan(
                                     text: 'Login',
-                                    style: AppTextStyle.interText.copyWith(color: AppColor.primaryColor))
+                                    style: AppTextStyle.interText
+                                        .copyWith(color: AppColor.primaryColor))
                               ])),
                     ),
-                                 ),
-                 ),
+                  ),
+                ),
               ],
             ),
           ),

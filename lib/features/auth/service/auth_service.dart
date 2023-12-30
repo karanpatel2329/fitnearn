@@ -18,17 +18,19 @@ class AuthService{
       sharedPreferences.setString('email',email);
       return true;
     }else{
+       Get.showSnackbar(GetSnackBar(title: 'error',message: 'Invalid email or password',duration: Duration(seconds: 2),),);
       
       return false;
     }
    }on DioException catch (e) {
-    print(e);
+  
      if(e.response?.statusCode==401){
-       Get.showSnackbar(GetSnackBar(title: 'error',message: 'Invalid email or password',duration: Duration(microseconds: 500),),);
+        print("+++INSIDE DIO ERORR");
+        Get.showSnackbar(const GetSnackBar(title: 'error',message: 'Invalid email or password',duration: Duration(seconds: 2)));
       }else{
-         Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(microseconds: 500)));
+         Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(seconds: 2)));
       }
-        Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(microseconds: 500)));
+        Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(seconds: 2)));
     
       return false;
    }
@@ -55,24 +57,37 @@ class AuthService{
       "state":state,
       "pincode":pincode
     });
-    print("++++${res}");
-    if(res.statusCode==200){
+    print("++++${res.statusCode}");
+    if(res.statusCode==200 ||res.statusCode==201){
       return true;
     }else{
+         Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(seconds: 2)));
      
       return false;
     }
     }
     on DioException catch (e) {
      if(e.response?.statusCode==401){
-       Get.showSnackbar(GetSnackBar(title: 'error',message: 'Invalid email or password',duration: Duration(microseconds: 500),),);
+       Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(seconds: 2),),);
       }else{
-         Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(microseconds: 500)));
+         Get.showSnackbar(GetSnackBar(title: 'error',message: 'Something went wrong',duration: Duration(seconds: 2)));
       }
       return false;
    }catch(e){
       
       return false;
+    }
+  }
+  static Future<List> pincode(String pincode)async{
+    try{
+        Dio dio = Dio();
+        var res =await dio.get(APIRoute.pincodeURL+pincode);
+        // print(res.data);
+        return res.data[0]['PostOffice'];
+        
+    }catch(e){
+      print(e);
+      return [];
     }
   }
 }

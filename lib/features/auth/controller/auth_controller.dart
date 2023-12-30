@@ -37,7 +37,7 @@ class AuthController extends GetxController {
     bool res =
         await AuthService.register(fullName: fullNameController.text,mobile: mobileController.text,email: registerEmailController.text,password: registerPasswordController.text,address: addressController.text,age: ageController.text,gender: gender.value,city: cityController.text,state: stateController.text,pincode: pincodeController.text,dob: dob.value??DateTime.now());
     if (res) {
-      Get.offAll(HomeScreen());
+      Get.offAll(const HomeScreen());
     }
     isLoading.value = false;
   }
@@ -53,5 +53,43 @@ class AuthController extends GetxController {
      final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
      Get.offAll(LoginScreen());
+  }
+  bool isValidEmail(String email) {
+  // Email regex pattern
+  final RegExp emailRegex = RegExp(
+    r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$',
+  );
+
+  return emailRegex.hasMatch(email);
+}
+
+Future<bool> validateAddress()async{
+
+  List list =await AuthService.pincode(pincodeController.text);
+  if(list.isNotEmpty){
+    if(list[0]['State'].toString().toLowerCase()==stateController.text.toLowerCase()){
+      return true;
+    }
+  }
+  return false;
+}
+
+ void resetValuesToDefault() {
+    isLoading.value = false;
+    emailController.clear();
+    passwordController.clear();
+
+    registerEmailController.clear();
+    registerPasswordController.clear();
+    gender.value = 'male';
+    dob.value = null;
+
+    fullNameController.clear();
+    mobileController.clear();
+    ageController.clear();
+    addressController.clear();
+    cityController.clear();
+    stateController.clear();
+    pincodeController.clear();
   }
 }
